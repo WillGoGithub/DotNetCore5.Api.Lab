@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotNetCore5.Api;
+using DotNetCore5.Api.Lab.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetCore5.Api.Lab
 {
@@ -13,7 +16,7 @@ namespace DotNetCore5.Api.Lab
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().SeedDatabase().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -22,5 +25,20 @@ namespace DotNetCore5.Api.Lab
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+    }
+
+    public static class IHostExtentions
+    {
+        public static IHost SeedDatabase(this IHost host)
+        {
+            var scopeFactory = host.Services.GetRequiredService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ContosoPetsContext>();
+
+            if (context.Database.EnsureCreated())
+                SeedData.Initialize(context);
+
+            return host;
+        }
     }
 }
