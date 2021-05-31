@@ -17,7 +17,7 @@ build-testing:
     paths:
       - build
   only:
-    - testing
+    - master
 
 deploy-testing:
   image: gitlab.mores-dev.com:5050/docker/docker-image-alpine:latest
@@ -26,4 +26,4 @@ deploy-testing:
     - *init_rsync
     - rsync -avzh --delete --exclude-from=.rsync-exclude-rules --password-file=/etc/rsync.secret ./build/ root@${RSYNC_HOST_DEV}::${CI_PROJECT_NAME}
   only:
-    - testing
+    - master
