@@ -1,0 +1,29 @@
+stages:
+  - build
+  - test
+  - deploy
+
+.init_rsync: &init_rsync |
+  echo ${RSYNC_SECRET} > /etc/rsync.secret
+  chmod 600 /etc/rsync.secret
+
+build-testing:
+  image: gitlab.mores-dev.com:5050/docker/docker-image-dotnet:sdk-5.0
+  stage: build
+  script:
+    - dotnet restore
+    - dotnet publish -c Release -o build
+  artifacts:
+    paths:
+      - build
+  only:
+    - testing
+
+deploy-testing:
+  image: gitlab.mores-dev.com:5050/docker/docker-image-alpine:latest
+  stage: deploy
+  script:
+    - *init_rsync
+    - rsync -avzh --delete --exclude-from=.rsync-exclude-rules --password-file=/etc/rsync.secret ./build/ root@${RSYNC_HOST_DEV}::${CI_PROJECT_NAME}
+  only:
+    - testing
