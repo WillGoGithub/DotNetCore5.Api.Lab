@@ -45,8 +45,15 @@ namespace DotNetCore5.Api.Lab
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DotNetCore5.Api.Lab v1"));
             }
+            else // Production
+            {
+                app.UseExceptionHandler("/Error");
+                // Remove to use HTTP only
+                //app.UseHsts(); // HTTPS Strict mode
+            }
 
-            app.UseHttpsRedirection();
+            // Remove to use HTTP only
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
