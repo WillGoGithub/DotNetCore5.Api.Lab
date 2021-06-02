@@ -12,7 +12,7 @@ build-testing:
   stage: build
   script:
     - dotnet restore
-    - dotnet publish -c Debug -o build
+    - dotnet publish -c Development -o build
   artifacts:
     paths:
       - build

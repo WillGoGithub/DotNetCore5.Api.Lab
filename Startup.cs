@@ -41,9 +41,7 @@ namespace DotNetCore5.Api.Lab
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DotNetCore5.Api.Lab v1"));
+                app.UseDeveloperExceptionPage(); ;
             }
             else // Production
             {
@@ -54,6 +52,9 @@ namespace DotNetCore5.Api.Lab
 
             // Remove to use HTTP only
             //app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DotNetCore5.Api.Lab v1"))
 
             app.UseRouting();
 
