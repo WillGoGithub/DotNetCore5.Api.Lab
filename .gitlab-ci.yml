@@ -8,7 +8,7 @@ stages:
   chmod 600 /etc/rsync.secret
 
 build-testing:
-  image: gitlab.mores-dev.com:5050/docker/docker-image-dotnet:sdk-5.0
+  image: dotnet:sdk-5.0
   stage: build
   script:
     - dotnet restore
@@ -20,7 +20,7 @@ build-testing:
     - master
 
 deploy-testing:
-  image: gitlab.mores-dev.com:5050/docker/docker-image-alpine:latest
+  image: alpine:latest
   stage: deploy
   script:
     - *init_rsync
