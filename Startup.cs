@@ -54,7 +54,12 @@ namespace DotNetCore5.Api.Lab
             //app.UseHttpsRedirection();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DotNetCore5.Api.Lab v1"));
+            app.UseSwaggerUI(option =>
+            {
+                option.SwaggerEndpoint("/swagger/v1/swagger.json", "DotNetCore5.Api.Lab v1");
+
+                option.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 
